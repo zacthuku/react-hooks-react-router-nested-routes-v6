@@ -187,7 +187,7 @@ And boom! We have nested routing!
 Ok, let's try setting up another nested route. As mentioned in our introduction,
 we want to view a specific user profile while still viewing the list of all our
 available users. We can implement this feature by making our `UserProfile`
-component a _nested route_ within our `Home` component. 
+component a _nested route_ within our `Home` component.
 
 Let's update our `routes.js` file to make that change!
 
