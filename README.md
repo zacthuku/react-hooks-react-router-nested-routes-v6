@@ -39,7 +39,7 @@ component in our list of components. In fact, there was no single parent
 component to our whole application! Instead, we just had a bunch of parallel
 components, each of which was rendering on its own route.
 
-While the parallel approach definitely works, and might be the right decision
+While this parallel approach definitely works, and might be the right decision
 depending on the app you're building, it has some drawbacks. As mentioned above,
 we had some code that wasn't very DRY - we used the NavBar component in every
 one of our page views, and gave each of our routes the same exact errorElement.
@@ -50,7 +50,7 @@ hook. While this is, once again, a perfectly reasonable approach, it can be nice
 to have a parent component that can instantiate and pass down global application
 state when your app first loads.
 
->**Note**: we could have also used a more advanced feature of `react-router`
+>**Note**: We could have also used a more advanced feature of `react-router`
 >called `loaders`, which allow you to request data for a page as it loads. This
 >is an incredibly powerful and useful feature of `react-router`, but it takes a
 >fair bit of overhead to implement. Plus, you can still use `loaders` with a
@@ -112,10 +112,12 @@ export default routes;
 
 By entering our different route objects as an array associated with our `App`
 route's `children` key, we've set them up to render _inside_ of our `App`
-component.
+component. That means that if we navigate to any of these _nested routes_ - such
+as `/login`, for example - our `App` component will render with our `Login`
+component as a child component.
 
 Note that it's ok for our `Home` component to have the same path as our parent
-`App` component. All child route paths must start with their parent's route
+`App` component. All child route paths _must_ start with their parent's route
 path, but they can also directly match their parent's route path. However, you
 can only have one child route whose path exactly matches its parent's path - you
 can't have multiple child routes whose paths exactly match the parent's path.
@@ -132,6 +134,8 @@ our `NavBar` component directly within our `App`, rather than dropping it into
 every page-level component:
 
 ```jsx
+import NavBar from "./components/NavBar";
+
 function App(){
     return(
         <>
@@ -157,8 +161,8 @@ That's because there is still one tool we need to implement from
 `Outlet` component.
 
 An `Outlet` component is included within a component that has nested routes. It
-basically serves as a signal to that parent component that it could render
-various different components as its children, depending on what route a users
+basically serves as a signal to that parent component that it will render
+various different components as its children, depending on what route a user
 visits. The `Outlet` component works in conjuction with the `router` we set up
 using `createBrowserRouter` and `RouterProvider` to determine which component
 should be rendered based on the current route.
