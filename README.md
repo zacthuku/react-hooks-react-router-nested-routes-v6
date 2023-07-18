@@ -261,8 +261,9 @@ What if we need to pass data from a parent component to a nested route? We're
 invoking the `Outlet` component within the parent component instead of any of
 our child components, so we can't pass props in our usual way.
 
-The answer is to create a Context Provider using the `useContext` hook.
-Fortunately `react-router-dom` already has this feature built in!
+The answer is to create a Context Provider using React's `useContext` hook.
+Fortunately `react-router-dom` already has this feature built in to `Outlet`
+components via the `useOutletContext` hook!
 
 We can pass data to our `Outlet` component via a `context` prop, then access it
 in whatever child component needs the data using the `useOutletContext` hook.
@@ -413,7 +414,7 @@ const routes = [
 ```
 
 Our `Home` route is nested within our `App` route, and our `UserProfile` route
-is nested within our `App` route.
+is nested within our `Home` route.
 
 If we provide a piece of data to the `Outlet` component within our `App`, and we
 want to access it within our `UserProfile` component, we'll have to pass that
@@ -421,7 +422,7 @@ data to the `Outlet` component within our `Home` component first.
 
 Essentially, `useOutletContext` only looks at the _immediate parent_ `Outlet`
 for data. So, if we have one `Outlet` nested within another `Outlet`, we'll need
-to make sure we pass data to that inner outlet as well:
+to make sure we pass data to that inner `Outlet` as well:
 
 ```jsx
 // Home.js
@@ -482,10 +483,12 @@ include a global parent component for our whole app.
 It's not a _requirement_ to use Nested Routing in an application, but it's an
 incredibly powerful tool to have at our disposal.
 
-In the next section, we'll look at another powerful tool, the `useNavigate`
-hook, to learn how to add programmatic navigation to our applications.
+In the next section, we'll look at two other powerful tools, the `useNavigate`
+hook and the `Navigate` component, to learn how to add programmatic navigation
+to our applications.
 
 ## Resources
 
-- [Resource Link 1](example.com)
-- [Resource Link 2](example.com)
+- [Nested Routes](https://reactrouter.com/en/main/start/tutorial#nested-routes)
+- [Outlet](https://reactrouter.com/en/main/components/outlet)
+- [useOutletContext](https://reactrouter.com/en/main/hooks/use-outlet-context)
