@@ -74,6 +74,7 @@ will render each of our page-level components as a nested route of our `/` path
 and our `App` component:
 
 ```jsx
+// routes.js
 import App from "./App";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -134,6 +135,7 @@ our `NavBar` component directly within our `App`, rather than dropping it into
 every page-level component:
 
 ```jsx
+// App.js
 import NavBar from "./components/NavBar";
 
 function App(){
@@ -149,6 +151,9 @@ function App(){
 
 Much easier! And, if we create a new page for our website, we don't have to
 remember to include the `NavBar` component within that new page.
+
+Remember to remove the `NavBar` portion of your JSX from the `Home` component
+after adding this code to `App`.
 
 ## Using react-router-dom's Outlet Component
 
@@ -170,7 +175,9 @@ should be rendered based on the current route.
 Including it in a component is pretty straightforward:
 
 ```jsx
+// App.js
 import { Outlet } from "react-router-dom";
+import NavBar from "./components/NavBar";
 
 function App(){
     return(
@@ -196,6 +203,7 @@ component a _nested route_ within our `Home` component.
 Let's update our `routes.js` file to make that change!
 
 ```jsx
+// routes.js
 // ...import statements
 
 const routes = [
@@ -233,14 +241,13 @@ We'll need to also make sure we update our `Home` component to use the `Outlet`
 component from `react-router-dom`.
 
 ```jsx
+// Home.js
 import { Outlet } from "react-router-dom";
 import users from "../data";
 import UserCard from "../components/UserCard";
 
 function Home(){
-    const userList = users.map(user =>{
-    <UserCard key={user.id} {...user}/>
-  })
+    const userList = users.map(user => <UserCard key={user.id} {...user}/>)
 
   return (
       <main>
@@ -249,11 +256,16 @@ function Home(){
         {userList}
       </main>
   );
-}
+};
+
+export default Home;
 ```
 
 Try navigating to one of our user profile routes. You should see that profile
-component rendering on the same page as our list of users!
+component rendering on the same page as our list of users! (It won't look like
+much, at present, since we're only rendering a user's name. In a real app,
+you'll like be displaying more information and will make things look a lot
+snazzier using CSS.)
 
 ## Passing Data via useOutletContext
 
@@ -290,13 +302,15 @@ const {firstProp, secondProp} = useOutletContext();
 
 Let's change our code such that our `users` data is only imported into our `App`
 component - similar to how data would load if we were to `fetch` it from a
-database upon initial application load. We'll want to pass users down via our
-`Outlet` component's `context` prop, so that we can access it within our nested
-routes.
+database upon initial application load. We'll then want to pass users down via
+our `Outlet` component's `context` prop, so that we can access it within our
+nested routes.
 
 ```jsx
+// App.js
 import { Outlet } from "react-router-dom";
-import { users } from "../data";
+import NavBar from "./components/NavBar";
+import users from "./data";
 
 function App(){
     return(
@@ -314,14 +328,13 @@ Now, within our `Home` component we can use the `useOutletContext` hook to
 access that piece of data:
 
 ```jsx
+// Home.js
 import { Outlet, useOutletContext } from "react-router-dom";
 import UserCard from "../components/UserCard";
 
 function Home(){
     const users = useOutletContext();
-    const userList = users.map(user =>{
-    <UserCard key={user.id} {...user}/>
-  });
+    const userList = users.map(user => <UserCard key={user.id} {...user}/>);
 
   return (
       <main>
@@ -331,6 +344,8 @@ function Home(){
       </main>
   );
 };
+
+export default Home;
 ```
 
 We should see our list of users rendering just as it was before!
@@ -346,7 +361,7 @@ component to include the following code:
 
 ```jsx
 // UserCard.js
-import { Link, useOutletContext } from "react-router-dom"
+import { Link, useOutletContext } from "react-router-dom";
 
 function UserCard({id, name}) {
     const users = useOutletContext();
@@ -362,8 +377,10 @@ function UserCard({id, name}) {
   );
 };
 
-export default UserCard
+export default UserCard;
 ```
+
+We should be seeing our array of four users being logged to our browser console.
 
 Instead of passing props from `Home` to `UserCard`, we can just use the
 `useOutletContext` hook to directly access the data that was originally passed
@@ -380,6 +397,7 @@ If we look at our `routes` in our `routes.js` file, we'll see that we have a
 deeply nested route:
 
 ```jsx
+// routes.js
 // ...import statements
 
 const routes = [
@@ -427,14 +445,11 @@ to make sure we pass data to that inner `Outlet` as well:
 ```jsx
 // Home.js
 import { Outlet, useOutletContext } from "react-router-dom";
-import users from "../data";
 import UserCard from "../components/UserCard";
 
 function Home(){
     const users = useOutletContext();
-    const userList = users.map(user =>{
-    <UserCard key={user.id} {...user}/>
-  });
+    const userList = users.map(user => <UserCard key={user.id} {...user}/>);
 
   return (
       <main>
@@ -443,7 +458,9 @@ function Home(){
         {userList}
       </main>
   );
-}
+};
+
+export default Home;
 ```
 
 Now we can successfully access that data within our `UserProfile` component:
@@ -460,14 +477,9 @@ function UserProfile() {
   const user = users.find(user => user.id === parseInt(params.id));
 
   return(
-    <>
-      <header>
-        <NavBar />
-      </header>
-      <main>
+      <aside>
         <h1>{user.name}</h1>
-      </main>
-    </>
+      </aside>
   );
 };
 
