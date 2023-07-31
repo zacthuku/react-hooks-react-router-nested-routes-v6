@@ -7,9 +7,9 @@ function UserProfile() {
   const user = users.find(user => user.id === parseInt(params.id))
 
   return(
-      <main>
+      <aside>
         <h1>{user.name}</h1>
-      </main>
+      </aside>
   );
 };
 
