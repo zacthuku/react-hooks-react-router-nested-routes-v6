@@ -4,7 +4,7 @@ import NavBar from "../components/NavBar";
 
 function Home() {
   
-  const userList = users.map(user =><UserCard key={user.id} {...user}/>)
+  const userList = users.map(user =><UserCard key={user.id} user={user}/>)
 
   return (
     <>
