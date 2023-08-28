@@ -1,4 +1,4 @@
-# Nested Routing
+# Nested Routing Code-Along
 
 ## Learning Goals
 
@@ -18,13 +18,13 @@ on every one of our components — we'll fix that too.
 
 Second of all, we don't want to navigate to a brand new web page to view a
 specific user. Instead, we want that user to display on the same page as the
-list of users! But, we do still want each user to have it's own URL associated
-with it, so that we can share links to specific users if we want to.
+list of users! But we do still want each user to have their own URL
+so that we can share links to specific users if we want to.
 
 All of this can be done using **Nested Routing**. Nested Routing allows us to
 re-render specific _pieces_ of a webpage when a user navigates to a new route,
 rather than re-rendering the entire page. This can be great for developers, as
-it allows easy re-use of certain components, as well as for users, as it can
+it allows easy reuse of certain components, and also for users, as it can
 make navigating a website smoother and easier.
 
 To add Nested Routing to our application, we'll need to use a few other things
@@ -32,7 +32,7 @@ from `react-router-dom`: the `children` attribute on our route objects, the
 `Outlet` component, and the `useOutletContext` hook. Let's dive into each of
 those in turn!
 
-## Rendering Nested Routes as "children"
+## Adding a Parent Component
 
 In our last code-along, you might have noticed that we didn't have an `App`
 component in our list of components. In fact, there was no single parent
@@ -45,7 +45,7 @@ we had some code that wasn't very DRY — we used the `NavBar` component in ever
 one of our page views, and gave each of our routes the same exact `errorElement`.
 
 Moreover, the only way we could have declared global state for our application
-would have been through creating our own contextProvider with the `useContext`
+would have been through creating our own `contextProvider` with the `useContext`
 hook. While this is, once again, a perfectly reasonable approach, it can be nice
 to have a parent component that can instantiate and pass down global application
 state when your app first loads.
@@ -63,7 +63,11 @@ will often depend on what you're trying to build. As a beginner, it's best to
 learn a variety of design patterns, so you can intelligently apply the right one
 to your own unique situation!
 
-Okay, enough theorizing - how do we actually create this parent App component?
+Okay, enough theorizing — let's get to actually creating this parent App component. We will pick up where we left off with the last code-along, but note that we've already added the `App.js` file for you.
+
+If you haven't already, go ahead and fork and clone the repo for this code-along.
+
+## Rendering Nested Routes as "children"
 
 `react-router-dom` gives us a variety of options we can include in our route
 objects; so far, we've covered `path`, `element`, and `errorElement`. Another
@@ -111,26 +115,28 @@ const routes = [
 export default routes;
 ```
 
-By entering our different route objects as an array associated with our `App`
+Let's walk through all of the changes we've made in the `routes.js` file.
+
+First, we imported the `App` component and added it as the parent component in our routes array.
+
+Second, by entering our different route objects as an array associated with our `App`
 route's `children` key, we've set them up to render _inside_ of our `App`
 component. That means that if we navigate to any of these _nested routes_ — such
 as `/login`, for example — our `App` component will render with our `Login`
 component as a child component.
 
 Note that it's okay for our `Home` component to have the same path as our parent
-`App` component. All child route paths _must_ start with their parent's route
-path, but they can also directly match their parent's route path. However, you
-can only have one child route whose path exactly matches its parent's path - you
-can't have multiple child routes whose paths exactly match the parent's path.
+`App` component. All child route paths must _start with_ their parent's route
+path, and one of them (but only one) can _exactly match_ its parent's route path.
 
-Now that all of our routes are children of `App`, we can just include our
+Third, now that all of our routes are children of `App`, we can just include our
 `errorElement` on `App` — any errors that occur in one of our nested routes will
 "bubble up" to the parent route, which will render our `ErrorPage`. Much DRYer!
 
-You can still render unique errorElements for each route, if you want to create
+Alternatively, you can render unique `errorElement`s for each route, if you want to create
 different error handling pages for different routes.
 
-Since `App` now renders no matter what URL we visit, we can also just include
+There's one more simplification we can make, this time to the `App.js` file. Since `App` now renders no matter what URL we visit, we can just include
 our `NavBar` component directly within our `App`, rather than dropping it into
 every page-level component:
 
@@ -152,8 +158,8 @@ function App(){
 Much easier! And, if we create a new page for our website, we don't have to
 remember to include the `NavBar` component within that new page.
 
-Remember to remove the `NavBar` portion of your JSX from the `Home` component
-after adding this code to `App`.
+Remember to remove the `header` containing the `NavBar` from the `Home` component
+after adding this code to `App`. We have already removed it from the other pages for you. 
 
 ## Using `react-router-dom`'s Outlet Component
 
@@ -247,7 +253,7 @@ import users from "../data";
 import UserCard from "../components/UserCard";
 
 function Home(){
-    const userList = users.map(user => <UserCard key={user.id} {...user}/>)
+    const userList = users.map(user => <UserCard key={user.id} user={user}/>);
 
   return (
       <main>
@@ -262,7 +268,7 @@ export default Home;
 ```
 
 Try navigating to one of our user profile routes. You should see that profile
-component rendering on the same page as our list of users! (It won't look like
+component rendering at the top of the page, above our list of users! (It won't look like
 much, at present, since we're only rendering a user's name. In a real app,
 you'll like be displaying more information and will make things look a lot
 snazzier using CSS.)
@@ -334,7 +340,7 @@ import UserCard from "../components/UserCard";
 
 function Home(){
     const users = useOutletContext();
-    const userList = users.map(user => <UserCard key={user.id} {...user}/>);
+    const userList = users.map(user => <UserCard key={user.id} user={user}/>);
 
   return (
       <main>
@@ -449,7 +455,7 @@ import UserCard from "../components/UserCard";
 
 function Home(){
     const users = useOutletContext();
-    const userList = users.map(user => <UserCard key={user.id} {...user}/>);
+    const userList = users.map(user => <UserCard key={user.id} user={user}/>);
 
   return (
       <main>
