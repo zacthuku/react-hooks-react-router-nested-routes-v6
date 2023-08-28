@@ -46,15 +46,17 @@ one of our page views, and gave each of our routes the same exact
 `errorElement`.
 
 Moreover, the only way we could have declared global state for our application
-would have been through creating our own `contextProvider` with the `useContext`
-hook. While this is, once again, a perfectly reasonable approach, it can be nice
-to have a parent component that can instantiate and pass down global application
+would have been through creating our own `contextProvider` with [the
+`useContext` hook](https://react.dev/learn/passing-data-deeply-with-context).
+While this is, once again, a perfectly reasonable approach, it can be nice to
+have a parent component that can instantiate and pass down global application
 state when your app first loads.
 
 >**Note**: We could have also used a more advanced feature of `react-router`
 >called `loaders`, which allow you to request data for a page as it loads. This
 >is an incredibly powerful and useful feature of `react-router`, but it takes a
->fair bit of overhead to implement. To read more about loaders, [check out the documentation](https://reactrouter.com/en/main/route/loader).
+>fair bit of overhead to implement. To read more about loaders, [check out the
+>documentation](https://reactrouter.com/en/main/route/loader).
 
 There are many different ways to solve these problems, and the best solution
 will often depend on what you're trying to build. As a beginner, it's best to
