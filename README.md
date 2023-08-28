@@ -13,19 +13,19 @@ application we made in the previous code-along. However, we want to make some
 updates!
 
 First of all, we don't want to have to include our `NavBar` component in every
-page level component — that wasn't very DRY! We also included the same `ErrorPage`
-on every one of our components — we'll fix that too.
+page level component — that wasn't very DRY! We also included the same
+`ErrorPage` on every one of our components — we'll fix that too.
 
 Second of all, we don't want to navigate to a brand new web page to view a
 specific user. Instead, we want that user to display on the same page as the
-list of users! But we do still want each user to have their own URL
-so that we can share links to specific users if we want to.
+list of users! But we do still want each user to have their own URL so that we
+can share links to specific users if we want to.
 
 All of this can be done using **Nested Routing**. Nested Routing allows us to
 re-render specific _pieces_ of a webpage when a user navigates to a new route,
 rather than re-rendering the entire page. This can be great for developers, as
-it allows easy reuse of certain components, and also for users, as it can
-make navigating a website smoother and easier.
+it allows easy reuse of certain components, and also for users, as it can make
+navigating a website smoother and easier.
 
 To add Nested Routing to our application, we'll need to use a few other things
 from `react-router-dom`: the `children` attribute on our route objects, the
@@ -42,7 +42,8 @@ components, each of which was rendering on its own route.
 While this parallel approach definitely works, and might be the right decision
 depending on the app you're building, it has some drawbacks. As mentioned above,
 we had some code that wasn't very DRY — we used the `NavBar` component in every
-one of our page views, and gave each of our routes the same exact `errorElement`.
+one of our page views, and gave each of our routes the same exact
+`errorElement`.
 
 Moreover, the only way we could have declared global state for our application
 would have been through creating our own `contextProvider` with the `useContext`
@@ -53,19 +54,19 @@ state when your app first loads.
 >**Note**: We could have also used a more advanced feature of `react-router`
 >called `loaders`, which allow you to request data for a page as it loads. This
 >is an incredibly powerful and useful feature of `react-router`, but it takes a
->fair bit of overhead to implement. Plus, you can still use `loaders` with a
->single parent application component - the two design patterns aren't mutually
->exclusive. Once you start getting the hang of `react-router`'s more basic
->features, then it might be a good idea to explore using `loaders`.
+>fair bit of overhead to implement. To read more about loaders, [check out the documentation](https://reactrouter.com/en/main/route/loader).
 
 There are many different ways to solve these problems, and the best solution
 will often depend on what you're trying to build. As a beginner, it's best to
 learn a variety of design patterns, so you can intelligently apply the right one
 to your own unique situation!
 
-Okay, enough theorizing — let's get to actually creating this parent App component. We will pick up where we left off with the last code-along, but note that we've already added the `App.js` file for you.
+Okay, enough theorizing — let's get to actually creating this parent App
+component. We will pick up where we left off with the last code-along, but note
+that we've already added the `App.js` file for you.
 
-If you haven't already, go ahead and fork and clone the repo for this code-along.
+If you haven't already, go ahead and fork and clone the repo for this
+code-along.
 
 ## Rendering Nested Routes as "children"
 
@@ -117,28 +118,31 @@ export default routes;
 
 Let's walk through all of the changes we've made in the `routes.js` file.
 
-First, we imported the `App` component and added it as the parent component in our routes array.
+First, we imported the `App` component and added it as the parent component in
+our routes array.
 
-Second, by entering our different route objects as an array associated with our `App`
-route's `children` key, we've set them up to render _inside_ of our `App`
+Second, by entering our different route objects as an array associated with our
+`App` route's `children` key, we've set them up to render _inside_ of our `App`
 component. That means that if we navigate to any of these _nested routes_ — such
 as `/login`, for example — our `App` component will render with our `Login`
 component as a child component.
 
 Note that it's okay for our `Home` component to have the same path as our parent
 `App` component. All child route paths must _start with_ their parent's route
-path, and one of them (but only one) can _exactly match_ its parent's route path.
+path, and one of them (but only one) can _exactly match_ its parent's route
+path.
 
 Third, now that all of our routes are children of `App`, we can just include our
 `errorElement` on `App` — any errors that occur in one of our nested routes will
 "bubble up" to the parent route, which will render our `ErrorPage`. Much DRYer!
 
-Alternatively, you can render unique `errorElement`s for each route, if you want to create
-different error handling pages for different routes.
+Alternatively, you can render unique `errorElement`s for each route, if you want
+to create different error handling pages for different routes.
 
-There's one more simplification we can make, this time to the `App.js` file. Since `App` now renders no matter what URL we visit, we can just include
-our `NavBar` component directly within our `App`, rather than dropping it into
-every page-level component:
+There's one more simplification we can make, this time to the `App.js` file.
+Since `App` now renders no matter what URL we visit, we can just include our
+`NavBar` component directly within our `App`, rather than dropping it into every
+page-level component:
 
 ```jsx
 // App.js
@@ -158,8 +162,9 @@ function App(){
 Much easier! And, if we create a new page for our website, we don't have to
 remember to include the `NavBar` component within that new page.
 
-Remember to remove the `header` containing the `NavBar` from the `Home` component
-after adding this code to `App`. We have already removed it from the other pages for you. 
+Remember to remove the `header` containing the `NavBar` from the `Home`
+component after adding this code to `App`. We have already removed it from the
+other pages for you. 
 
 ## Using `react-router-dom`'s Outlet Component
 
@@ -268,9 +273,9 @@ export default Home;
 ```
 
 Try navigating to one of our user profile routes. You should see that profile
-component rendering at the top of the page, above our list of users! (It won't look like
-much, at present, since we're only rendering a user's name. In a real app,
-you'll like be displaying more information and will make things look a lot
+component rendering at the top of the page, above our list of users! (It won't
+look like much, at present, since we're only rendering a user's name. In a real
+app, you'll like be displaying more information and will make things look a lot
 snazzier using CSS.)
 
 ## Passing Data via useOutletContext
