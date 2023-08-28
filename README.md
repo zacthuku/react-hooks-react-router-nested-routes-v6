@@ -2,19 +2,19 @@
 
 ## Learning Goals
 
-- Created nested routes using `children` and `Outlet`
+- Create nested routes using `children` and `Outlet`
 - DRY up code with nested routing
 - Pass data to nested route components using `useOutletContext`
 
 ## Introduction
 
-In this code along, we're going to keep working with our Social Media
-application we made in the previous code along. However, we want to make some
+In this code-along, we're going to keep working with our Social Media
+application we made in the previous code-along. However, we want to make some
 updates!
 
 First of all, we don't want to have to include our `NavBar` component in every
-page level component - that wasn't very DRY! We also included the same ErrorPage
-on every one of our components - we'll fix that too.
+page level component — that wasn't very DRY! We also included the same `ErrorPage`
+on every one of our components — we'll fix that too.
 
 Second of all, we don't want to navigate to a brand new web page to view a
 specific user. Instead, we want that user to display on the same page as the
@@ -28,21 +28,21 @@ it allows easy re-use of certain components, as well as for users, as it can
 make navigating a website smoother and easier.
 
 To add Nested Routing to our application, we'll need to use a few other things
-from `react-router-dom` - the `children` attribute on our route objects, the
+from `react-router-dom`: the `children` attribute on our route objects, the
 `Outlet` component, and the `useOutletContext` hook. Let's dive into each of
 those in turn!
 
 ## Rendering Nested Routes as "children"
 
-In our last code along, you might have noticed that we didn't have an `App`
+In our last code-along, you might have noticed that we didn't have an `App`
 component in our list of components. In fact, there was no single parent
 component to our whole application! Instead, we just had a bunch of parallel
 components, each of which was rendering on its own route.
 
 While this parallel approach definitely works, and might be the right decision
 depending on the app you're building, it has some drawbacks. As mentioned above,
-we had some code that wasn't very DRY - we used the NavBar component in every
-one of our page views, and gave each of our routes the same exact errorElement.
+we had some code that wasn't very DRY — we used the `NavBar` component in every
+one of our page views, and gave each of our routes the same exact `errorElement`.
 
 Moreover, the only way we could have declared global state for our application
 would have been through creating our own contextProvider with the `useContext`
@@ -66,7 +66,7 @@ to your own unique situation!
 Okay, enough theorizing - how do we actually create this parent App component?
 
 `react-router-dom` gives us a variety of options we can include in our route
-objects - so far, we've covered `path`, `element`, and `errorElement`. Another
+objects; so far, we've covered `path`, `element`, and `errorElement`. Another
 option, `children`, is how we can tell a route that it has _nested routes_.
 
 Go ahead and update our `routes.js` file to include the following code. This
@@ -113,19 +113,19 @@ export default routes;
 
 By entering our different route objects as an array associated with our `App`
 route's `children` key, we've set them up to render _inside_ of our `App`
-component. That means that if we navigate to any of these _nested routes_ - such
-as `/login`, for example - our `App` component will render with our `Login`
+component. That means that if we navigate to any of these _nested routes_ — such
+as `/login`, for example — our `App` component will render with our `Login`
 component as a child component.
 
-Note that it's ok for our `Home` component to have the same path as our parent
+Note that it's okay for our `Home` component to have the same path as our parent
 `App` component. All child route paths _must_ start with their parent's route
 path, but they can also directly match their parent's route path. However, you
 can only have one child route whose path exactly matches its parent's path - you
 can't have multiple child routes whose paths exactly match the parent's path.
 
 Now that all of our routes are children of `App`, we can just include our
-`errorElement` on `App` - any errors that occur in one of our nested routes will
-"bubble up" to the parent route, which will render our ErrorPage. Much DRYer!
+`errorElement` on `App` — any errors that occur in one of our nested routes will
+"bubble up" to the parent route, which will render our `ErrorPage`. Much DRYer!
 
 You can still render unique errorElements for each route, if you want to create
 different error handling pages for different routes.
@@ -155,20 +155,20 @@ remember to include the `NavBar` component within that new page.
 Remember to remove the `NavBar` portion of your JSX from the `Home` component
 after adding this code to `App`.
 
-## Using react-router-dom's Outlet Component
+## Using `react-router-dom`'s Outlet Component
 
 If you've opened the code up in your browser, you might have noticed that our
-app still isn't working correctly - visiting the child routes doesn't actually
+app still isn't working correctly — visiting the child routes doesn't actually
 render the pages we want.
 
 That's because there is still one tool we need to implement from
-`react-router-dom` in order to get our nested routes up and running - the
+`react-router-dom` in order to get our nested routes up and running: the
 `Outlet` component.
 
 An `Outlet` component is included within a component that has nested routes. It
 basically serves as a signal to that parent component that it will render
 various different components as its children, depending on what route a user
-visits. The `Outlet` component works in conjuction with the `router` we set up
+visits. The `Outlet` component works in conjunction with the `router` we set up
 using `createBrowserRouter` and `RouterProvider` to determine which component
 should be rendered based on the current route.
 
@@ -301,8 +301,8 @@ const {firstProp, secondProp} = useOutletContext();
 ```
 
 Let's change our code such that our `users` data is only imported into our `App`
-component - similar to how data would load if we were to `fetch` it from a
-database upon initial application load. We'll then want to pass users down via
+component — similar to how data would load if we were to `fetch` it from a
+database upon initial application load. We'll then want to pass `users` down via
 our `Outlet` component's `context` prop, so that we can access it within our
 nested routes.
 
@@ -391,7 +391,7 @@ Context Providers in general with React's `useContext` hook.
 However, there is a small hitch that we run into if we have deeply nested
 routes.
 
-### useOutletContext and Deeply Nested Routes
+### `useOutletContext` and Deeply Nested Routes
 
 If we look at our `routes` in our `routes.js` file, we'll see that we have a
 deeply nested route:
