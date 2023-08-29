@@ -47,10 +47,12 @@ one of our page views, and gave each of our routes the same exact
 
 Moreover, the only way we could have declared global state for our application
 would have been through creating our own `contextProvider` with [the
-`useContext` hook](https://react.dev/learn/passing-data-deeply-with-context).
+`useContext` hook][useContext].
 While this is, once again, a perfectly reasonable approach, it can be nice to
 have a parent component that can instantiate and pass down global application
 state when your app first loads.
+
+[useContext]: (https://react.dev/learn/passing-data-deeply-with-context)
 
 >**Note**: We could have also used a more advanced feature of `react-router`
 >called `loaders`, which allow you to request data for a page as it loads. This
