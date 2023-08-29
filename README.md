@@ -499,6 +499,13 @@ function UserProfile() {
 export default UserProfile;
 ```
 
+>**Note**: We're using an `aside` here instead of `main` because `UserProfile`
+>is now being rendered as a child of `Home`, and `Home` already has a `main`
+>element. HTML best practices dictate that there should be only one `main`
+>element per page view. And, since `UserProfile` only appears on a nested route,
+>we're displaying it in an `aside`, as it will appear alongside the list of
+>users we're rendering.
+
 ## Conclusion
 
 To review, we learned how to set up Nested Routes using `react-router-dom`,
