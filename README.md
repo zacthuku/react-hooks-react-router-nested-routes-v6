@@ -47,10 +47,9 @@ one of our page views, and gave each of our routes the same exact
 
 Moreover, the only way we could have declared global state for our application
 would have been through creating our own `contextProvider` with [the
-`useContext` hook][useContext].
-While this is, once again, a perfectly reasonable approach, it can be nice to
-have a parent component that can instantiate and pass down global application
-state when your app first loads.
+`useContext` hook][useContext]. While this is, once again, a perfectly
+reasonable approach, it can be nice to have a parent component that can
+instantiate and pass down global application state when your app first loads.
 
 [useContext]: (https://react.dev/learn/passing-data-deeply-with-context)
 
@@ -183,9 +182,8 @@ That's because there is still one tool we need to implement from
 An `Outlet` component is included within a component that has nested routes. It
 basically serves as a signal to that parent component that it will render
 various different components as its children, depending on what route a user
-visits. The `Outlet` component works in conjunction with the `router` we set up
-using `createBrowserRouter` and `RouterProvider` to determine which component
-should be rendered based on the current route.
+visits. The `Outlet` component works in conjunction with the `router` to
+determine which component should be rendered based on the current route.
 
 Including it in a component is pretty straightforward:
 
