@@ -2,9 +2,9 @@
 
 ## Learning Goals
 
-- Create nested routes using `children` and `Outlet`
-- DRY up code with nested routing
-- Pass data to nested route components using `useOutletContext`
+- Create nested routes using `children` and `Outlet`.
+- DRY up code with nested routing.
+- Pass data to nested route components using `useOutletContext`.
 
 ## Introduction
 
@@ -481,7 +481,7 @@ Now we can successfully access that data within our `UserProfile` component:
 ```jsx
 // UserProfile.js
 import { useParams, useOutletContext } from "react-router-dom";
-import NavBar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 
 function UserProfile() {
   const params = useParams();
