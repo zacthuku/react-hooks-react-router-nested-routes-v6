@@ -69,7 +69,9 @@ component. We will pick up where we left off with the last code-along, but note
 that we've already added the `App.js` file for you.
 
 If you haven't already, go ahead and fork and clone the repo for this
-code-along.
+code-along. Then run `npm install` to install the dependencies, `npm run server`
+to start your `json-server`, and `npm start` to open the application in the
+browser.
 
 ## Rendering Nested Routes as "children"
 
