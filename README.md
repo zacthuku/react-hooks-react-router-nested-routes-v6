@@ -396,15 +396,15 @@ update this component to include the following code:
 // UserCard.js
 import { Link, useOutletContext } from "react-router-dom";
 
-function UserCard({id, name}) {
+function UserCard({user}) {
     const users = useOutletContext();
     console.log(users);
 
   return (
     <article>
-        <h2>{name}</h2>
+        <h2>{user.name}</h2>
         <p>
-          <Link to={`/profile/${id}`}>View profile</Link>
+          <Link to={`/profile/${user.id}`}>View profile</Link>
         </p>
     </article>
   );
@@ -501,7 +501,6 @@ Now we can successfully access that data within our `UserProfile` component.
 ```jsx
 // UserProfile.js
 import { useParams, useOutletContext } from "react-router-dom";
-import NavBar from "../components/NavBar";
 
 function UserProfile() {
   const params = useParams();
