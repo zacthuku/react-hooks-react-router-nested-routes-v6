@@ -69,7 +69,9 @@ component. We will pick up where we left off with the last code-along, but note
 that we've already added the `App.js` file for you.
 
 If you haven't already, go ahead and fork and clone the repo for this
-code-along.
+code-along. Then run `npm install` to install the dependencies, `npm run server`
+to start your `json-server`, and `npm start` to open the application in the
+browser.
 
 ## Rendering Nested Routes as "children"
 
@@ -167,7 +169,7 @@ remember to include the `NavBar` component within that new page.
 
 Remember to remove the `header` containing the `NavBar` from the `Home`
 component after adding this code to `App`. We have already removed it from the
-other pages for you. 
+other pages for you.
 
 ## Using `react-router-dom`'s Outlet Component
 
@@ -255,20 +257,31 @@ component from `react-router-dom`.
 
 ```jsx
 // Home.js
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import users from "../data";
 import UserCard from "../components/UserCard";
 
 function Home(){
-    const userList = users.map(user => <UserCard key={user.id} user={user}/>);
+    const [users, setUsers] = useState([]);
 
-  return (
-      <main>
-        <h1>Home!</h1>
-        <Outlet />
-        {userList}
-      </main>
-  );
+    useEffect(() =>{
+        fetch("http://localhost:4000/users")
+        .then(r => r.json())
+        .then(data => setUsers(data))
+        .catch(error => console.error(error));
+    }, []);
+
+    const userList = users.map(user =>{
+        return <UserCard key={user.id} user={user}/>;
+    });
+
+    return (
+        <main>
+            <h1>Home!</h1>
+            <Outlet />
+            {userList}
+        </main>
+    );
 };
 
 export default Home;
@@ -313,19 +326,26 @@ object to the context prop, then destructure it when you invoke the
 const {firstProp, secondProp} = useOutletContext();
 ```
 
-Let's change our code such that our `users` data is only imported into our `App`
-component — similar to how data would load if we were to `fetch` it from a
-database upon initial application load. We'll then want to pass `users` down via
-our `Outlet` component's `context` prop, so that we can access it within our
-nested routes.
+Let's change our code such that our `users` data is being fetched within our
+`App` component. We'll then want to pass `users` down via our `Outlet`
+component's `context` prop, so that we can access it within our nested routes.
 
 ```jsx
 // App.js
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "./components/NavBar";
-import users from "./data";
 
 function App(){
+    const [users, setUsers] = useState([]);
+
+    useEffect(() =>{
+        fetch("http://localhost:4000/users")
+        .then(r => r.json())
+        .then(data => setUsers(data))
+        .catch(error => console.error(error));
+    }, []);
+
     return(
         <>
             <header>
@@ -368,23 +388,23 @@ We should see our list of users rendering just as it was before!
 Like with any context provider, we can actually access data that we pass to our
 `Outlet` component's `context` prop within deeply nested components.
 
-Take our `UserCard` component, for example. We don't need all of our user data
-in this component, but for the sake of demonstration we're going to update this
-component to include the following code:
+Take our `UserCard` component, for example. We don't need our whole array of
+user data in this component, but for the sake of demonstration we're going to
+update this component to include the following code:
 
 ```jsx
 // UserCard.js
 import { Link, useOutletContext } from "react-router-dom";
 
-function UserCard({id, name}) {
+function UserCard({user}) {
     const users = useOutletContext();
     console.log(users);
 
   return (
     <article>
-        <h2>{name}</h2>
+        <h2>{user.name}</h2>
         <p>
-          <Link to={`/profile/${id}`}>View profile</Link>
+          <Link to={`/profile/${user.id}`}>View profile</Link>
         </p>
     </article>
   );
@@ -476,18 +496,21 @@ function Home(){
 export default Home;
 ```
 
-Now we can successfully access that data within our `UserProfile` component:
+Now we can successfully access that data within our `UserProfile` component.
 
 ```jsx
 // UserProfile.js
 import { useParams, useOutletContext } from "react-router-dom";
-import NavBar from "../components/NavBar";
 
 function UserProfile() {
   const params = useParams();
   const users = useOutletContext();
 
   const user = users.find(user => user.id === parseInt(params.id));
+
+  if (!user){
+    return <h1>Loading...</h1>
+  }
 
   return(
       <aside>
@@ -498,6 +521,11 @@ function UserProfile() {
 
 export default UserProfile;
 ```
+
+We could have still used a `useEffect` and a `fetch` to load specific user data
+as we did in the previous code along, but in this case we're finding our
+specific user using our array of user state passed by `useOutletContex` and the
+`.find` method, for the sake of demonstration.
 
 >**Note**: We're using an `aside` here instead of `main` because `UserProfile`
 >is now being rendered as a child of `Home`, and `Home` already has a `main`
